@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     responseText.setText(str);
             }
         }
-    };
+    }  ;
 
 
     @Override
