@@ -7,12 +7,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by explorer on 15-11-24.
- */
 public class getWebData {
 
-    public static final int SHOW_RESPONSE = 0;
 
     public static void sendHttpRequest(final String address, final HttpCallbackListenter listenter) {
         new Thread(new Runnable() {
@@ -25,8 +21,7 @@ public class getWebData {
                     connection.setRequestMethod("GET");
                     connection.setConnectTimeout(8000);
                     connection.setReadTimeout(8000);
-                    //connection.setDoInput(true);
-                    //connection.setDoOutput(true);
+
 
 
                     InputStream in = connection.getInputStream();
