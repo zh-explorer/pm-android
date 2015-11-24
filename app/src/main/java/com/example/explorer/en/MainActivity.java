@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import static com.example.explorer.en.decodeJson.decode;
@@ -21,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static final int SHOW_RESPONSE = 0;
 
+    public static final int SHOW_LOCATION = 1;
+
     private Button sendRequest;
 
     private TextView responseText;
@@ -28,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView locationText;
 
     private LocationManager locationManager;
+
+    private Location currentLocation;
 
     private String provider;
     public Handler handler = new Handler() {
@@ -39,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     str += "Latitude: " + data.getLatitude() + "\n";
                     str += "Longitude" + data.getLongitude() + "\n";
                     responseText.setText(str);
+                    break;
+                case SHOW_LOCATION:
+                    String currentPosition = (String) msg.obj;
+                    locationText.setText(currentPosition);
+                    break;
+                default:
+                    break;
             }
         }
     };
@@ -109,16 +124,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
-    private void showLocation(Location location) {
-        String currentPosition = "latitude is " + location.getLatitude() + "\n"
-                + "longitude is " + location.getLongitude();
-        locationText.setText(currentPosition);
+    private void showLocation(final Location location) {
+
+        currentLocation = location;
+        StringBuilder url = new StringBuilder();
+
+        url.append("http://maps.google.cn/maps/api/geocode/json?latlng=");
+        url.append(location.getLatitude()).append(",");
+        url.append(location.getLongitude());
+        url.append("&sensor=false");
+        getWebData.sendHttpRequest(url.toString(), new HttpCallbackListenter() {
+            @Override
+            public void onFinish(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray resultArray = jsonObject.getJSONArray("results");
+
+                    if (resultArray.length() > 0) {
+                        JSONObject subObject = resultArray.getJSONObject(0);
+                        String address = subObject.getString("formatted_address");
+
+                        Message message = new Message();
+                        message.what = SHOW_LOCATION;
+                        message.obj = address;
+                        handler.sendMessage(message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                e.printStackTrace();
+            }
+        });
+
     }
+
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.send_response) {
-            getWebData.sendHttpRequest("http://121.42.25.113:8080/?user=explorer", new HttpCallbackListenter() {
+            StringBuilder url = new StringBuilder();
+            url.append("http://121.42.25.113:8080/?user=explorer");
+            url.append("&latitude=");
+            url.append(currentLocation.getLatitude());
+            url.append("&longitude=");
+            url.append(currentLocation.getLongitude());
+
+            getWebData.sendHttpRequest(url.toString(), new HttpCallbackListenter() {
 
                 @Override
                 public void onFinish(String response) {
@@ -136,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
     }
-
 
 }
 
