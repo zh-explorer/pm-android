@@ -82,6 +82,7 @@ public class WeatherDB {
             } while(cursor.moveToNext());
         }
 
+        cursor.close();
         return list;
     }
 

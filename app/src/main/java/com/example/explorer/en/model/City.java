@@ -13,6 +13,18 @@ public class City {
     private double longitude;
     private String province;
 
+    public City(Object info) {
+        if (info.getClass() == CityInfo.class) {
+            CityInfo cityInfo = (CityInfo)info;
+            cityName = cityInfo.getCity();
+            countyName = cityInfo.getCnty();
+            cityCode = cityInfo.getId();
+            latitude = Double.parseDouble(cityInfo.getLat());
+            longitude = Double.parseDouble(cityInfo.getLon());
+            province = cityInfo.getProv();
+        }
+    }
+
     public int getId() {
         return id;
     }

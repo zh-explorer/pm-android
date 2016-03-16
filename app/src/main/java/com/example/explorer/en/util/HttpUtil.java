@@ -1,4 +1,4 @@
-package com.example.explorer.en;
+package com.example.explorer.en.util;
 
 
 import java.io.BufferedReader;
@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class getWebData {
+public class HttpUtil {
 
 
     public static void sendHttpRequest(final String address, final HttpCallbackListenter listenter) {

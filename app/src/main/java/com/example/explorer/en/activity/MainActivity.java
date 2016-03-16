@@ -1,4 +1,4 @@
-package com.example.explorer.en;
+package com.example.explorer.en.activity;
 
 import android.content.Context;
 import android.location.Location;
@@ -14,12 +14,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.explorer.en.R;
+import com.example.explorer.en.model.Data;
+import com.example.explorer.en.util.HttpCallbackListenter;
+import com.example.explorer.en.util.HttpUtil;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.example.explorer.en.decodeJson.decode;
+import static com.example.explorer.en.util.decodeJson.decode;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -133,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         url.append(location.getLatitude()).append(",");
         url.append(location.getLongitude());
         url.append("&sensor=false");
-        getWebData.sendHttpRequest(url.toString(), new HttpCallbackListenter() {
+        HttpUtil.sendHttpRequest(url.toString(), new HttpCallbackListenter() {
             @Override
             public void onFinish(String response) {
                 try {
@@ -173,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             url.append("&longitude=");
             url.append(currentLocation.getLongitude());
 
-            getWebData.sendHttpRequest(url.toString(), new HttpCallbackListenter() {
+            HttpUtil.sendHttpRequest(url.toString(), new HttpCallbackListenter() {
 
                 @Override
                 public void onFinish(String response) {

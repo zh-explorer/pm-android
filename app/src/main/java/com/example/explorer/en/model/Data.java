@@ -1,9 +1,10 @@
-package com.example.explorer.en;
+package com.example.explorer.en.model;
 
 import java.security.acl.LastOwnerException;
 
 /**
  * Created by explorer on 15-11-24.
+ * Tne environment data stone class
  */
 public class Data {
     private double PM = 0;
