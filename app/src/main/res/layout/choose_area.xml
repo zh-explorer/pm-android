@@ -13,13 +13,14 @@
             android:layout_height="match_parent"
             android:id="@+id/search_edit"
             android:layout_toLeftOf="@+id/search_button"
+            android:hint="@string/search_city"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:hint="搜索城市"/>
+            android:maxLength="10"/>
 
         <Button
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:id="@+id/search_button"
             android:background="@mipmap/search"
             android:layout_alignParentTop="true"

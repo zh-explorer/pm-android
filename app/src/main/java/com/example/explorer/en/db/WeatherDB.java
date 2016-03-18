@@ -4,10 +4,19 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.SimpleCursorAdapter;
 
 import com.example.explorer.en.model.City;
+import com.example.explorer.en.model.Data;
+import com.example.explorer.en.util.HttpCallbackListenter;
+import com.example.explorer.en.util.HttpUtil;
+import com.example.explorer.en.util.Utility;
 
+import org.json.JSONObject;
+
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +39,7 @@ public class WeatherDB {
     private static WeatherDB weatherDB;
 
     private SQLiteDatabase db;
+
 
     /**
      * make a private build func
@@ -81,9 +91,27 @@ public class WeatherDB {
                 list.add(city);
             } while(cursor.moveToNext());
         }
+        else {
+            list = queryFromServer();
+        }
 
         cursor.close();
         return list;
     }
 
+    private List<City> queryFromServer() {
+        String url = "https://api.heweather.com/x3/citylist?search=allchina&key=9bcab69f01614c91a5a5c652b7999ee0";
+        HttpUtil.sendHttpRequest(url, new HttpCallbackListenter() {
+            @Override
+            public void onFinish(String response) {
+                Utility.handleCitiesResponse(weatherDB, response);
+                Message message = new Message();
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
+    }
 }

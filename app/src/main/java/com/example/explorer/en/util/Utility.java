@@ -8,6 +8,7 @@ import com.example.explorer.en.model.CityList;
 import com.example.explorer.en.model.CityInfo;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,17 +16,19 @@ import java.util.List;
  *
  */
 public class Utility {
-    public static boolean handleCitiesResponse(WeatherDB weatherDB, String response) {
+    public static List<City> handleCitiesResponse(WeatherDB weatherDB, String response) {
         Gson gson = new Gson();
         CityList cityList = gson.fromJson(response, CityList.class);
         List<CityInfo> list = cityList.getCityList();
+        List<City> cityList1 = new ArrayList<>();
         if (!TextUtils.isEmpty(response)) {
             for (Object aList : list) {
                 City city = new City(aList);
+                cityList1.add(city);
                 weatherDB.saveCity(city);
             }
-            return true;
+            return cityList1;
         }
-        return false;
+        return null;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.explorer.en.model;
 
+import android.os.Bundle;
+
 /**
  * Created by explorer on 16-3-16.
  * a city class to stone data
@@ -23,6 +25,20 @@ public class City {
             longitude = Double.parseDouble(cityInfo.getLon());
             province = cityInfo.getProv();
         }
+    }
+
+    public City() {
+
+    }
+
+    public City(Bundle bundle) {
+        id = bundle.getInt("id");
+        cityName = bundle.getString("cityName");
+        countyName = bundle.getString("countyName");
+        cityCode = bundle.getString("cityCode");
+        latitude = bundle.getDouble("latitude");
+        longitude = bundle.getDouble("longitude");
+        province = bundle.getString("province");
     }
 
     public int getId() {
@@ -79,5 +95,17 @@ public class City {
 
     public void setProvince(String province) {
         this.province = province;
+    }
+
+    public Bundle getBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
+        bundle.putString("cityName", cityName);
+        bundle.putString("countyName",countyName);
+        bundle.putString("cityCode",cityCode);
+        bundle.putDouble("longitude",longitude);
+        bundle.putDouble("latitude",latitude);
+        bundle.putString("province",province);
+        return bundle;
     }
 }
